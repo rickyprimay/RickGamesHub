@@ -36,6 +36,19 @@ struct ProfilesView: View {
             }
             
             .navigationTitle("Profile")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Link(destination: URL(string: "https://rickyprimay.me")!) {
+                        Image(systemName: "network")
+                            .font(.system(size: 20))
+                            .foregroundColor(.black)
+                            .frame(width: 50, height: 50)
+                            .background(.gray)
+                            .cornerRadius(10)
+                            .padding(.bottom)
+                    }
+                }
+            }
         }
     }
 }
