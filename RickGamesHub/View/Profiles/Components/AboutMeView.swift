@@ -27,6 +27,10 @@ struct AboutMeView: View {
         .padding(.top, 10)
         
         
+        Text("My self description: ")
+            .font(.headline)
+            .padding(.top, 20)
+        
         Text("I fell in love with programming and I have at least learnt something, I think… 🤷‍♂️. ")
             .font(.body)
             .foregroundColor(.gray)
