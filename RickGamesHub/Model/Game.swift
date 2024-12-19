@@ -10,14 +10,19 @@ import SwiftUI
 struct Game: Identifiable, Codable {
     let id: Int
     let name: String
-    let background_image: String
+    let backgroundImage: String
     let rating: Double
     let released: String
-    let short_screenshots: [Screenshot]
-    let parent_platforms: [Platform]
+    let shortScreenshots: [Screenshot]
     
     var backgroundImageURL: URL? {
-        return URL(string: background_image)
+        return URL(string: backgroundImage)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id, name, rating, released
+        case backgroundImage = "background_image"
+        case shortScreenshots = "short_screenshots"
     }
 }
 
@@ -31,13 +36,4 @@ struct Screenshot: Codable {
     var screenShotURL: URL? {
         return URL(string: image)
     }
-}
-
-struct Platform: Codable {
-    let platform: PlatformDetails
-}
-
-struct PlatformDetails: Codable, Identifiable {
-    let id: Int
-    let name: String
 }

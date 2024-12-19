@@ -8,19 +8,35 @@
 import SwiftUI
 
 struct FavoritesView: View {
-    
-    @State private var favoriteGames: [Game] = []
+    @StateObject private var viewModel = FavoritesViewModel()
     
     var body: some View {
         NavigationView {
-            if !favoriteGames.isEmpty{
+            if !viewModel.favorites.isEmpty {
                 ScrollView {
                     LazyVStack {
-                        ForEach(favoriteGames) { game in
+                        ForEach(viewModel.favorites, id: \.self) { game in
                             NavigationLink {
-                                DetailGameView(game: game)
+                                let screenshots = (game.shortScreenshots?.allObjects as? [ShortScreenshot] ?? []).map { ShortScreenshot in
+                                    Screenshot(image: ShortScreenshot.image ?? "")
+                                }
+                                DetailGameView(game: Game(
+                                    id: Int(game.id),
+                                    name: game.name ?? "Unknown",
+                                    backgroundImage: game.backgroundImage ?? "",
+                                    rating: game.rating,
+                                    released: game.released ?? "Unknown",
+                                    shortScreenshots: screenshots
+                                ))
                             } label: {
-                                ResultSearchView(game: game)
+                                ResultSearchView(game: Game(
+                                    id: Int(game.id),
+                                    name: game.name ?? "Unknown",
+                                    backgroundImage: game.backgroundImage ?? "",
+                                    rating: game.rating,
+                                    released: game.released ?? "Unknown",
+                                    shortScreenshots: [] 
+                                ))
                             }
                         }
                     }
@@ -28,24 +44,14 @@ struct FavoritesView: View {
                     .navigationTitle("Favorite Games")
                 }
             } else {
-                Text("No favorites games yet")
+                Text("No favorite games yet")
                     .font(.title)
                     .foregroundStyle(.gray)
                     .navigationTitle("Favorite Games")
             }
         }
         .onAppear {
-            loadFavoriteGames()
-        }
-    }
-    
-    func loadFavoriteGames() {
-        if let data = UserDefaults.standard.data(forKey: "favoriteGames"),
-           let decodedGames = try? JSONDecoder().decode([Game].self, from: data) {
-            favoriteGames = decodedGames
-        } else {
-            favoriteGames = []
+            viewModel.getFavorites()
         }
     }
 }
-

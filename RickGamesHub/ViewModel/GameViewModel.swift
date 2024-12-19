@@ -10,7 +10,13 @@ import Combine
 
 class GameViewModel: ObservableObject {
     
-    static let apiKey = "de3553fdc6094d7e921b759708332b68"
+    static var apiKey: String {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "Api_key") as? String else {
+            fatalError("API Key not found in Info.plist")
+        }
+        return key
+    }
+    
     let baseUrl = "https://api.rawg.io/api/"
     var cancelable = Set<AnyCancellable>()
     @Published var filteredGames: [Game] = []

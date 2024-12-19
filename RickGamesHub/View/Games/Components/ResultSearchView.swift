@@ -59,6 +59,10 @@ struct ResultSearchView: View {
                 }
                 .foregroundColor(.yellow)
                 .fontWeight(.heavy)
+                
+                Text("Released: \(game.released)")
+                    .foregroundColor(.white)
+                    .font(.subheadline)
             }
             Spacer()
         }
